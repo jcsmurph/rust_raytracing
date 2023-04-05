@@ -28,7 +28,7 @@ impl HitRecord {
 }
 
 pub trait Hit: Sync {
-    fn hit(&self, r: &Ray, t_min: f64, t_max: f64) -> Option<(HitRecord, &Material)>;
+    fn hit(&self, ray: &Ray, t_min: f64, t_max: f64) -> Option<(HitRecord, &Material)>;
 }
 
 pub struct HitBox {
@@ -42,11 +42,11 @@ impl HitBox {
 }
 
 impl Hit for HitBox {
-    fn hit(&self, r: &Ray, t_min: f64, t_max: f64) -> Option<(HitRecord, &Material)> {
+    fn hit(&self, ray: &Ray, t_min: f64, t_max: f64) -> Option<(HitRecord, &Material)> {
         let mut closest_so_far = t_max;
         let mut res = None;
         for h in self.list.iter() {
-            if let Some((hit_record, material)) = h.hit(r, t_min, closest_so_far) {
+            if let Some((hit_record, material)) = h.hit(ray, t_min, closest_so_far) {
                 closest_so_far = hit_record.t();
                 res = Some((
                     HitRecord::new(hit_record.t(), hit_record.p(), hit_record.normal()),

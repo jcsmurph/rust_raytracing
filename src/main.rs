@@ -114,11 +114,14 @@ fn random_scene() -> HitBox {
     HitBox::new(list)
 }
 
-fn main() {
-    let native_options = eframe::NativeOptions::default();
+fn main() -> Result<(), eframe::Error> {
+    let options = eframe::NativeOptions {
+        ..Default::default()
+    };
+
     eframe::run_native(
-        "My egui App",
-        native_options,
-        Box::new(|cc| Box::new(MyEguiApp::new(cc))),
-    ).unwrap();
+        "RayTracing image generator",
+        options,
+        Box::new(|_cc| Box::new(MyEguiApp { height: 200, width: 400, ..Default::default()})),
+    )
 }

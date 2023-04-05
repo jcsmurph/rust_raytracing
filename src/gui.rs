@@ -1,36 +1,44 @@
 use crate::imagegenerator::ImageGenerator;
+use eframe::egui;
+use egui_extras::RetainedImage;
 
-#[derive(Default)]
 pub struct MyEguiApp {
-    height: f32,
-    width: f32,
-    rays_per_pixel: f32,
+    pub height: i32,
+    pub width: i32,
+    pub image: RetainedImage,
 }
 
-impl MyEguiApp {
-    pub fn new(cc: &eframe::CreationContext<'_>) -> Self {
+impl MyEguiApp {}
+
+impl Default for MyEguiApp {
+    fn default() -> Self {
         Self {
-            height: 0.0,
-            width: 0.0,
-            rays_per_pixel: 0.0,
+            image: RetainedImage::from_image_bytes("output.ppm", include_bytes!("output.ppm"))
+                .unwrap(),
+            height: 0,
+            width: 0,
         }
     }
 }
 
 impl eframe::App for MyEguiApp {
-   fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
-       egui::CentralPanel::default().show(ctx, |ui| {
-           ui.heading("RayTracing Image Generation!");
+    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        egui::SidePanel::left("Hello there").show(ctx, |ui| {
+            ui.heading("RayTracing Image Generation");
 
-           ui.add(egui::Slider::new(&mut self.width, 0.0..=1200.0).text("Adjust Image Width"));
-           ui.add(egui::Slider::new(&mut self.height, 0.0..=800.0).text("Adjust Image Height"));
-           ui.add(egui::Slider::new(&mut self.rays_per_pixel, 0.0..=100.0).text("Adjust Image Rays per Pixel"));
+            ui.add(egui::Slider::new(&mut self.width, 200..=1200).text("Adjust Image Width"));
+            ui.add(egui::Slider::new(&mut self.height, 100..=1200).text("Adjust Image Height"));
 
-           if ui.button("Generate Image").clicked() {
-                let image = ImageGenerator::new(self.height, self.width, self.rays_per_pixel);
+            if ui.button("Generate Image").clicked() {
+                let image_generator = ImageGenerator::new(self.height.into(), self.width.into());
 
-                ImageGenerator::generate_image(&image);
-           }
-       });
-   }
+                ImageGenerator::generate_image(&image_generator);
+            }
+
+
+            self.image.show(ui);
+
+
+        });
+    }
 }
