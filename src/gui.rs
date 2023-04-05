@@ -23,7 +23,7 @@ impl Default for MyEguiApp {
 
 impl eframe::App for MyEguiApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        egui::SidePanel::left("Hello there").show(ctx, |ui| {
+        egui::CentralPanel::default().show(ctx, |ui| {
             ui.heading("RayTracing Image Generation");
 
             ui.add(egui::Slider::new(&mut self.width, 200..=1200).text("Adjust Image Width"));
