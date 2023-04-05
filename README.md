@@ -30,10 +30,3 @@ Add dummy output.ppm file
 Long term fix:
 Only access image on "Generate Image" rather than persistent
 
-3. Image appears in Side Panel with Gui button/sliders
-
-Short term fix:
-None
-
-Long term fix:
-Reformat Gui for image to show in right window
